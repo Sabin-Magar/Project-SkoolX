@@ -13,4 +13,9 @@ It helps manage students, teachers, parents and announcements so on......
 
 ## Dependencies Intsallation
 - npm install
-- npm install -D tailwindcss postcss autoprefixer //(for tailwind css )
+
+//(for tailwind css )
+- npm install -D tailwindcss postcss autoprefixer 
+
+//(for charts to be displayed in dashboard)
+- npm install recharts
