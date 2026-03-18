@@ -5,14 +5,15 @@ const AdminPage = () => {
     <div className="p-4 flex gap-4 flex-col md:flex-row">
 
       {/* left portion */}
-      <div className="w-full lg:w-2/3 flex flex-col gap-8">left</div>
+      <div className="w-full lg:w-2/3 flex flex-col gap-8">
 
-      {/* User Cards */}
-      <div className="flex gap-4 justify-between">
-        <UserCard type="student"/>
-        <UserCard type="teacher"/>
-        <UserCard type="parent"/>
-        <UserCard type="staff"/>
+        {/* User Cards */}
+        <div className="flex gap-4 justify-between flex-wrap">
+          <UserCard type="student"/>
+          <UserCard type="teacher"/>
+          <UserCard type="parent"/>
+          <UserCard type="staff"/>
+        </div>
       </div>
 
       {/* right portion */}
