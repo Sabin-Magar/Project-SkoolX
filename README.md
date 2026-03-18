@@ -18,4 +18,5 @@ It helps manage students, teachers, parents and announcements so on......
 - npm install -D tailwindcss postcss autoprefixer 
 
 //(for charts to be displayed in dashboard)
-- npm install recharts
+- npm install recharts 'OR' npm install recharts --legacy-peer-deps
+
