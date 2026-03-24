@@ -20,6 +20,6 @@ It helps manage students, teachers, parents and announcements so on......
 //(for charts to be displayed in dashboard)
 - npm install recharts 'OR' npm install recharts --legacy-peer-deps
 
-//(for react calandar in the right side of dashboard)
+//(for react calendar in the right side of dashboard)
 - npm install react-calendar --legacy-peer-deps
 
