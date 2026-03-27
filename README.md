@@ -23,3 +23,5 @@ It helps manage students, teachers, parents and announcements so on......
 //(for react calendar in the right side of dashboard)
 - npm install react-calendar --legacy-peer-deps
 
+
+
