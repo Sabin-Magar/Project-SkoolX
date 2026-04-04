@@ -9,7 +9,7 @@ type Teacher = {
   id:number;
   teacherId:string;
   name:string;
-  email?:string;l
+  email?:string;
   photo:string;
   phone:string;
   subjects:string[];
