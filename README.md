@@ -23,7 +23,7 @@ It helps manage students, teachers, parents and announcements so on......
 //(for react calendar in the right side of dashboard)
 - npm install react-calendar --legacy-peer-deps
 
-//(for react big calendar in the left side of student dashboard)
+//(for react big calendar of student dashboard--left section)
 - npm install react-big-calendar --legacy-peer-deps
 - npm i react-big-calendar moment --legacy-peer-deps
 - npm install @types/react-big-calendar --legacy-peer-deps
