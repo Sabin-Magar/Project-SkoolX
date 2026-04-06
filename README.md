@@ -28,3 +28,7 @@ It helps manage students, teachers, parents and announcements so on......
 - npm i react-big-calendar moment --legacy-peer-deps
 - npm install @types/react-big-calendar --legacy-peer-deps
 
+//(for react hook form and zod)
+- npm i react-hook-form -legacy-peer-deps
+- npm i react-hook-form zod --legacy-peer-deps
+- npm i react-hook-form zod @hookform/resolvers --legacy-peer-deps
