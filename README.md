@@ -32,3 +32,7 @@ It helps manage students, teachers, parents and announcements so on......
 - npm i react-hook-form -legacy-peer-deps
 - npm i react-hook-form zod --legacy-peer-deps
 - npm i react-hook-form zod @hookform/resolvers --legacy-peer-deps
+
+//(for prisma orm)
+- npm i prisma 'OR' npm i prisma --legacy-peer-deps
+- npx prisma init 
