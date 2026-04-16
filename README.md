@@ -37,3 +37,4 @@ It helps manage students, teachers, parents and announcements so on......
 - npm i prisma 'OR' npm i prisma --legacy-peer-deps
 - npx prisma init 
 - npx prisma migrate dev --name init (for connecting prisma to db)
+- npm i -D ts-node --legacy-peer-deps
