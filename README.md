@@ -38,3 +38,8 @@ It helps manage students, teachers, parents and announcements so on......
 - npx prisma init 
 - npx prisma migrate dev --name init (for connecting prisma to db)
 - npm i -D ts-node --legacy-peer-deps
+- npm install @prisma/client --legacy-peer-deps
+
+- npm i -D tsx --legacy-peer-deps
+- npm install prisma@6 @prisma/client@6 --legacy-peer-deps
+- npx prisma generate

@@ -1,5 +1,12 @@
+import { config } from "dotenv";
+config({ path: ".env" });
+
 import { Day, PrismaClient, UserSex } from "@prisma/client";
-const prisma = new PrismaClient();
+
+const prisma = new PrismaClient({
+  log: ["error"],
+  adapter: null,
+} as any);
 
 async function main() {
   // ADMIN
