@@ -4,23 +4,12 @@ import Table from "@/components/Table";
 import TableSearch from "@/components/TableSearch";
 import { role, teachersData } from "@/lib/data";
 import prisma from "@/lib/prisma";
+import { ITEM_PER_PAGE } from "@/lib/settings";
 import { Class, Subject, Teacher } from "@prisma/client";
 import Image from "next/image";
 import Link from "next/link";
 
 type TeacherList = Teacher & { subjects: Subject[] } & { classes: Class[] };
-
-// type Teacher = {
-//   id:number;
-//   teacherId:string;
-//   name:string;
-//   email?:string;
-//   photo:string;
-//   phone:string;
-//   subjects:string[];
-//   classes:string[];
-//   address:string;
-// }
 
 const columns = [
     {
@@ -98,16 +87,35 @@ const columns = [
     </tr>
 );
 
-const TeacherListPage = async () => {
+const TeacherListPage = async ({
+  searchParams,
+}: {
+  // searchParams: { [key: string]: string  | undefined};
+  searchParams: Promise<{ [key: string]: string  | undefined}>;
+}) => {
 
-  const data = await prisma.teacher.findMany({
+  const resolvedParams = await searchParams;
+  // ---------------- use resolvedParams instead of searchParams to avoid hydration issue ----------------
+  // const { page, ...queryParams } = searchParams;
+  const { page, ...queryParams } = resolvedParams;
+
+
+
+  const p = page ? parseInt(page) : 1;
+
+  const [data, count] = await prisma.$transaction([
+    prisma.teacher.findMany({
     include: {
       subjects: true,
       classes: true,
     },
-  })
+    take: ITEM_PER_PAGE,
+    skip: ITEM_PER_PAGE * (p - 1),
+  }),
+  prisma.teacher.count(),
+  ]);
 
-  console.log(data);
+  console.log(count);
 
   return (
     <div className="bg-white p-4 rounded-md flex-1 m-4 mt-0">
@@ -137,7 +145,7 @@ const TeacherListPage = async () => {
       <Table columns={columns} renderRow={renderRow} data={data}/>
 
       {/* Pagination Section */}
-      <Pagination />
+      <Pagination page={p} count={count} />
     </div>
   )
 }
