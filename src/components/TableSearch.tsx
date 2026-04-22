@@ -8,8 +8,6 @@ const TableSearch = () => {
   const router = useRouter();
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-
-
     e.preventDefault();
 
     const value = (e.currentTarget[0] as HTMLInputElement).value;
