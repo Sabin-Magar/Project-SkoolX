@@ -14,10 +14,10 @@ const AdminPage = () => {
 
         {/* User Cards */}
         <div className="flex gap-4 justify-between flex-wrap">
-          <UserCard type="student"/>
+          <UserCard type="admin"/>
           <UserCard type="teacher"/>
+          <UserCard type="student"/>
           <UserCard type="parent"/>
-          <UserCard type="staff"/>
         </div>
 
 
