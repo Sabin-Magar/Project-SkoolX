@@ -43,3 +43,8 @@ It helps manage students, teachers, parents and announcements so on......
 - npm i -D tsx --legacy-peer-deps
 - npm install prisma@6 @prisma/client@6 --legacy-peer-deps
 - npx prisma generate
+
+//(for clerk authentication)
+- npm install @clerk/nextjs --legacy-peer-deps
+- npm install @clerk/nextjs@6 --legacy-peer-deps
+- npm install @clerk/elements --legacy-peer-deps
