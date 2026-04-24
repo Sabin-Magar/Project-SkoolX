@@ -82,23 +82,37 @@ async function main() {
   }
 
   // LESSON
-  for (let i = 1; i <= 30; i++) {
-    await prisma.lesson.create({
-      data: {
-        name: `Lesson${i}`, 
-        day: Day[
-          Object.keys(Day)[
-            Math.floor(Math.random() * Object.keys(Day).length)
-          ] as keyof typeof Day
-        ], 
-        startTime: new Date(new Date().setHours(new Date().getHours() + 1)), 
-        endTime: new Date(new Date().setHours(new Date().getHours() + 3)), 
-        subjectId: (i % 10) + 1, 
-        classId: (i % 6) + 1, 
-        teacherId: `teacher${(i % 15) + 1}`, 
-      },
-    });
-  }
+  // for (let i = 1; i <= 30; i++) {
+  //   await prisma.lesson.create({
+  //     data: {
+  //       name: `Lesson${i}`, 
+  //       day: Day[
+  //         Object.keys(Day)[
+  //           Math.floor(Math.random() * Object.keys(Day).length)
+  //         ] as keyof typeof Day
+  //       ], 
+  //       startTime: new Date(new Date().setHours(new Date().getHours() + 1)), 
+  //       endTime: new Date(new Date().setHours(new Date().getHours() + 3)), 
+  //       subjectId: (i % 10) + 1, 
+  //       classId: (i % 6) + 1, 
+  //       teacherId: `teacher${(i % 15) + 1}`, 
+  //     },
+  //   });
+  // }
+  const days = Object.values(Day);
+for (let i = 1; i <= 30; i++) {
+  await prisma.lesson.create({
+    data: {
+      name: `Lesson${i}`,
+      day: days[Math.floor(Math.random() * days.length)],
+      startTime: new Date(new Date().setHours(new Date().getHours() + 1)),
+      endTime: new Date(new Date().setHours(new Date().getHours() + 3)),
+      subjectId: (i % 10) + 1,
+      classId: (i % 6) + 1,
+      teacherId: `teacher${(i % 15) + 1}`,
+    },
+  });
+}
 
   // PARENT
   for (let i = 1; i <= 25; i++) {
@@ -172,16 +186,27 @@ async function main() {
   }
 
   // ATTENDANCE
-  for (let i = 1; i <= 10; i++) {
-    await prisma.attendance.create({
-      data: {
-        date: new Date(), 
-        present: true, 
-        studentId: `student${i}`, 
-        lessonId: (i % 30) + 1, 
-      },
-    });
-  }
+  // for (let i = 1; i <= 10; i++) {
+  //   await prisma.attendance.create({
+  //     data: {
+  //       date: new Date(), 
+  //       present: true, 
+  //       studentId: `student${i}`, 
+  //       lessonId: (i % 30) + 1, 
+  //     },
+  //   });
+  // }
+  // ATTENDANCE
+for (let i = 1; i <= 10; i++) {
+  await prisma.attendance.create({
+    data: {
+      date: new Date(new Date().setDate(new Date().getDate() - (i % 6))), // spread across week
+      present: i % 2 === 0, // alternate present/absent
+      studentId: `student${i}`,
+      lessonId: (i % 30) + 1,
+    },
+  });
+}
 
   // EVENT
   for (let i = 1; i <= 5; i++) {
