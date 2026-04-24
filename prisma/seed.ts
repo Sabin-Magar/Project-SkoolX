@@ -209,17 +209,66 @@ for (let i = 1; i <= 10; i++) {
 }
 
   // EVENT
-  for (let i = 1; i <= 5; i++) {
-    await prisma.event.create({
-      data: {
-        title: `Event ${i}`, 
-        description: `Description for Event ${i}`, 
-        startTime: new Date(new Date().setHours(new Date().getHours() + 1)), 
-        endTime: new Date(new Date().setHours(new Date().getHours() + 2)), 
-        classId: (i % 5) + 1, 
-      },
-    });
-  }
+// for (let i = 1; i <= 5; i++) {
+//   const eventDate = new Date(
+//     Date.UTC(
+//       new Date().getUTCFullYear(),
+//       new Date().getUTCMonth(),
+//       new Date().getUTCDate() - (i - 1), // spread across days
+//       9, 0, 0, 0 // 9:00 AM UTC
+//     )
+//   );
+//   const eventEnd = new Date(
+//     Date.UTC(
+//       new Date().getUTCFullYear(),
+//       new Date().getUTCMonth(),
+//       new Date().getUTCDate() - (i - 1),
+//       10, 0, 0, 0 // 10:00 AM UTC
+//     )
+//   );
+
+//   await prisma.event.create({
+//     data: {
+//       title: `Event ${i}`,
+//       description: `Description for Event ${i}`,
+//       startTime: eventDate,
+//       endTime: eventEnd,
+//       classId: (i % 5) + 1,
+//     },
+//   });
+// }
+
+// EVENT
+for (let i = 1; i <= 5; i++) {
+  const today = new Date();
+
+  const eventStart = new Date(
+    Date.UTC(
+      today.getFullYear(),
+      today.getMonth(),
+      today.getDate(),
+      8 + i, 0, 0, 0 // 9AM, 10AM, 11AM, 12PM, 1PM
+    )
+  );
+  const eventEnd = new Date(
+    Date.UTC(
+      today.getFullYear(),
+      today.getMonth(),
+      today.getDate(),
+      9 + i, 0, 0, 0
+    )
+  );
+
+  await prisma.event.create({
+    data: {
+      title: `Event ${i}`,
+      description: `Description for Event ${i}`,
+      startTime: eventStart,
+      endTime: eventEnd,
+      classId: (i % 5) + 1,
+    },
+  });
+}
 
   // ANNOUNCEMENT
   for (let i = 1; i <= 5; i++) {
