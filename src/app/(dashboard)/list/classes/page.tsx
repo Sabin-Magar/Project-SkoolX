@@ -1,3 +1,4 @@
+import FormContainer from "@/components/FormContainer";
 import FormModal from "@/components/FormModal";
 import Pagination from "@/components/Pagination";
 import Table from "@/components/Table";
@@ -66,8 +67,8 @@ const ClassListPage = async ({
         <div className="flex items-center gap-2">
           {role === "admin" && (
             <>
-              <FormModal table="class" type="update" data={item}/>
-              <FormModal table="class" type="delete" id={item.id}/>
+              <FormContainer table="class" type="update" data={item}/>
+              <FormContainer table="class" type="delete" id={item.id}/>
             </>
           )}
         </div>
@@ -131,7 +132,7 @@ const ClassListPage = async ({
               <Image src="/sort.png" alt="" width={14} height={14} />
             </button>
             {role === "admin" && (
-              <FormModal table="class" type="create"/>
+              <FormContainer table="class" type="create"/>
             )}
           </div>
         </div>

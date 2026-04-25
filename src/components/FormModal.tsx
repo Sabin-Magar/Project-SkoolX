@@ -1,6 +1,6 @@
 "use client";
 
-import { deleteSubject } from "@/lib/actions";
+import { deleteClass, deleteSubject } from "@/lib/actions";
 import dynamic from "next/dynamic";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
@@ -11,7 +11,7 @@ import { FormContainerProps } from "./FormContainer";
 
 const deleteActionMap = {
   subject: deleteSubject,
-//   class: deleteClass,
+  class: deleteClass,
 //   teacher: deleteTeacher,
 //   student: deleteStudent,
 //   exam: deleteExam,
@@ -30,19 +30,22 @@ const deleteActionMap = {
 // import StudentForm from "./forms/StudentForm";
 // using lazy loading for forms to optimize performance using next/dynamic
 const TeacherForm = dynamic(() => import("./forms/TeacherForm"), {
-  loading: () => <h1>Loading...</h1>,
+    loading: () => <h1>Loading...</h1>,
 });
 const StudentForm = dynamic(() => import("./forms/StudentForm"), {
-  loading: () => <h1>Loading...</h1>,
+    loading: () => <h1>Loading...</h1>,
 });
 const SubjectForm = dynamic(() => import("./forms/SubjectForm"), {
-  loading: () => <h1>Loading...</h1>,
+    loading: () => <h1>Loading...</h1>,
+});
+
+const ClassForm = dynamic(() => import("./forms/ClassForm"),{
+    loading: () => <h1>Loading...</h1>,
 });
 
 const AnnouncementForm = dynamic(() => import("./forms/AnnouncementForm"));
 const AssignmentForm = dynamic(() => import("./forms/AssignmentForm"));
 const AttendanceForm = dynamic(() => import("./forms/AttendanceForm"));
-const ClassForm = dynamic(() => import("./forms/ClassForm"));
 const EventForm = dynamic(() => import("./forms/EventForm"));
 const ExamForm = dynamic(() => import("./forms/ExamForm"));
 const LessonForm = dynamic(() => import("./forms/LessonForm"));
@@ -64,9 +67,9 @@ const forms: {
     student: (setOpen, type, data, relatedData) => <StudentForm type={type} data={data} setOpen={setOpen} relatedData={relatedData} />,
     teacher: (setOpen, type, data, relatedData) => <TeacherForm type={type} data={data} setOpen={setOpen} relatedData={relatedData} />,
     subject: (setOpen, type, data, relatedData) => <SubjectForm type={type} data={data} setOpen={setOpen} relatedData={relatedData} />,
+    class: (setOpen, type, data, relatedData) => <ClassForm type={type} data={data} setOpen={setOpen} relatedData={relatedData} />,
 
     parent: (type, data) => <ParentForm type={type} data={data} />,
-    class: (type, data) => <ClassForm type={type} data={data} />,
     lesson: (type, data) => <LessonForm type={type} data={data} />,
     exam: (type, data) => <ExamForm type={type} data={data} />,
     assignment: (type, data) => <AssignmentForm type={type} data={data} />,

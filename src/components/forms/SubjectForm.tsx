@@ -40,6 +40,7 @@ const SubjectForm = ({
     console.log(data);
     startTransition(() => {
       // formAction({ ...data, img: img?.secure_url });
+      // formAction({ ...formData, id: data?.id }); 
       formAction(data);
   });
   });
@@ -52,7 +53,7 @@ const SubjectForm = ({
       setOpen(false);
       router.refresh();
     }
-  }, [state, router, type]);
+  }, [state, router, type, setOpen]);
 
   const { teachers } = relatedData; 
 
