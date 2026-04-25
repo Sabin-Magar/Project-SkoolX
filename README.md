@@ -51,3 +51,6 @@ It helps manage students, teachers, parents and announcements so on......
 
 //(for pop up notification)
 - npm i react-toastify --legacy-peer-deps
+
+//(for image upoading)
+- npm i next-cloudinary --legacy-peer-deps
