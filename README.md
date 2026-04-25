@@ -48,3 +48,6 @@ It helps manage students, teachers, parents and announcements so on......
 - npm install @clerk/nextjs --legacy-peer-deps
 - npm install @clerk/nextjs@6 --legacy-peer-deps
 - npm install @clerk/elements --legacy-peer-deps
+
+//(for pop up notification)
+- npm i react-toastify --legacy-peer-deps
