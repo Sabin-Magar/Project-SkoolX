@@ -3,6 +3,7 @@
 // Used in: students/[id]/page.tsx
 
 import { getStudentPrediction } from "@/lib/predictionService";
+import PredictionChart from "./PredictionChart";
 
 // const PredictionCard = async ({ studentId }: { studentId: string }) => {
 //   const data = await getStudentPrediction(studentId);
@@ -290,7 +291,7 @@ import { getStudentPrediction } from "@/lib/predictionService";
 
 // export default PredictionCard;
 
-// src/components/PredictionCard.tsx
+// ---------------------------------------------------------------------------------------------
 
 const PredictionCard = async ({ studentId }: { studentId: string }) => {
   const data = await getStudentPrediction(studentId);
@@ -411,7 +412,7 @@ const PredictionCard = async ({ studentId }: { studentId: string }) => {
 
         {/* Score history chart */}
         <div>
-          <p className="text-xs text-gray-400 uppercase tracking-widest mb-2">Score history</p>
+          {/* <p className="text-xs text-gray-400 uppercase tracking-widest mb-2">Score history</p>
           <div className="flex items-end gap-1.5 h-20">
             {data.past_scores.map((score, i) => (
               <div key={i} className="flex-1 flex flex-col items-center gap-1" title={`Exam ${i + 1}: ${score}`}>
@@ -427,7 +428,18 @@ const PredictionCard = async ({ studentId }: { studentId: string }) => {
                 style={{ height: `${(data.predicted_score / maxScore) * 100}%` }}
               />
             </div>
+          </div> */}
+
+          <div>
+            <p className="text-xs text-gray-400 uppercase tracking-widest mb-2">
+              Score history + prediction
+            </p>
+            <PredictionChart
+              pastScores={data.past_scores}
+              predictedScore={data.predicted_score}
+            />
           </div>
+
           <div className="flex justify-end gap-3 mt-1.5">
             <span className="flex items-center gap-1 text-xs text-gray-400">
               <span className="w-3 h-3 bg-blue-400 rounded-sm inline-block" /> Past
