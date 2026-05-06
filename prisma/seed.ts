@@ -183,16 +183,19 @@ for (let i = 1; i <= 30; i++) {
     });
   }
 
-  // RESULT
-  for (let i = 1; i <= 10; i++) {
+  // RESULT - give each student multiple scores across different exams
+for (let i = 1; i <= 50; i++) {
+  // each student gets 3 results
+  for (let j = 1; j <= 3; j++) {
     await prisma.result.create({
       data: {
-        score: 90, 
-        studentId: `student${i}`, 
-        ...(i <= 5 ? { examId: i } : { assignmentId: i - 5 }), 
+        score: Math.floor(Math.random() * 40) + 55, // scores between 55-95
+        studentId: `student${i}`,
+        examId: ((i + j) % 10) + 1,
       },
     });
   }
+}
 
   // ATTENDANCE
 for (let i = 1; i <= 10; i++) {
