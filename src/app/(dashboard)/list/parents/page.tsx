@@ -7,12 +7,9 @@ import { ITEM_PER_PAGE } from "@/lib/settings";
 import { auth } from "@clerk/nextjs/server";
 import { Parent, Prisma, Student } from "@prisma/client";
 import Image from "next/image";
-import Link from "next/link";
 
 
 type ParentList = Parent & { students: Student[] };
-
-
 
 const ParentListPage = async ({
   searchParams,
