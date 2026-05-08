@@ -1,11 +1,10 @@
 "use client";
 
-import { deleteClass, deleteExam, deleteStudent, deleteSubject, deleteTeacher } from "@/lib/actions";
+import { deleteClass, deleteExam, deleteResult, deleteStudent, deleteSubject, deleteTeacher } from "@/lib/actions";
 import dynamic from "next/dynamic";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { Dispatch, SetStateAction, useActionState, useEffect, useState } from "react";
-import { useFormState } from "react-dom";
 import { toast } from "react-toastify";
 import { FormContainerProps } from "./FormContainer";
 
@@ -15,14 +14,7 @@ const deleteActionMap = {
   teacher: deleteTeacher,
   student: deleteStudent,
   exam: deleteExam,
-// // TODO: OTHER DELETE ACTIONS
-//   parent: deleteSubject,
-//   lesson: deleteSubject,
-//   assignment: deleteSubject, 
-//   result: deleteSubject,
-//   attendance: deleteSubject,
-//   event: deleteSubject,
-//   announcement: deleteSubject,
+  result: deleteResult,
 };
 
 
@@ -47,13 +39,16 @@ const ExamForm = dynamic(() => import("./forms/ExamForm"),{
     loading: () => <h1>Loading...</h1>,
 });
 
+const ResultForm = dynamic(() => import("./forms/ResultForm"),{
+    loading: () => <h1>Loading...</h1>,
+});
+
 const AnnouncementForm = dynamic(() => import("./forms/AnnouncementForm"));
 const AssignmentForm = dynamic(() => import("./forms/AssignmentForm"));
 const AttendanceForm = dynamic(() => import("./forms/AttendanceForm"));
 const EventForm = dynamic(() => import("./forms/EventForm"));
 const LessonForm = dynamic(() => import("./forms/LessonForm"));
 const ParentForm = dynamic(() => import("./forms/ParentForm"));
-const ResultForm = dynamic(() => import("./forms/ResultForm"));
 
 
 
@@ -72,12 +67,12 @@ const forms: {
     class: (setOpen, type, data, relatedData) => <ClassForm type={type} data={data} setOpen={setOpen} relatedData={relatedData} />,
     student: (setOpen, type, data, relatedData) => <StudentForm type={type} data={data} setOpen={setOpen} relatedData={relatedData} />,
     exam: (setOpen, type, data, relatedData) => <ExamForm type={type} data={data} setOpen={setOpen} relatedData={relatedData} />,
+    result: (setOpen, type, data, relatedData) => <ResultForm type={type} data={data} setOpen={setOpen} relatedData={relatedData} />,
 
 
     parent: (type, data) => <ParentForm type={type} data={data} />,
     lesson: (type, data) => <LessonForm type={type} data={data} />,
     assignment: (type, data) => <AssignmentForm type={type} data={data} />,
-    result: (type, data) => <ResultForm type={type} data={data} />,
     attendance: (type, data) => <AttendanceForm type={type} data={data} />,
     event: (type, data) => <EventForm type={type} data={data} />,
     announcement: (type, data) => <AnnouncementForm type={type} data={data} />,
