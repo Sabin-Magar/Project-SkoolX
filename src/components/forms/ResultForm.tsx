@@ -74,16 +74,20 @@ const ResultForm = ({
     data?.assignmentId ? String(data.assignmentId) : ""
   );
 
+  const allStudents: any[] = Array.isArray(relatedData?.students) ? relatedData.students : [];
+  const allExams: any[]    = Array.isArray(relatedData?.exams)    ? relatedData.exams    : [];
+  const allAssignments: any[] = Array.isArray(relatedData?.assignments) ? relatedData.assignments : [];
+  const allClasses: any[]  = Array.isArray(relatedData?.classes)  ? relatedData.classes  : [];
 
-  // ✅ Auto-detect class from student when updating
-useEffect(() => {
-  if (type === "update" && data?.studentId && students.length > 0) {
-    const student = students.find((s: any) => s.id === data.studentId);
-    if (student) {
-      setSelectedClass(student.className);
+  useEffect(() => {
+    if (type === "update" && data?.studentId && allStudents.length > 0) {
+      const student = allStudents.find((s: any) => s.id === data.studentId);
+      if (student) {
+        setSelectedClass(student.className);
+      }
     }
-  }
-}, [ data?.studentId, type]);
+  }, [allStudents, data?.studentId, type]);
+
   //------------------------------------------------------------------
 
 
