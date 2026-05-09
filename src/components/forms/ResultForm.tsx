@@ -16,8 +16,6 @@ import { toast } from "react-toastify";
 import { useRouter } from "next/navigation";
 import { createResult, updateResult } from "@/lib/actions";
 
-// ─── Schema ──────────────────────────────────────────────────────────────────
-
 const resultSchema = z.object({
   id: z.coerce.number().optional(),
   score: z.coerce
@@ -31,8 +29,6 @@ const resultSchema = z.object({
 
 type ResultSchema = z.infer<typeof resultSchema>;
 
-// ─── Component ───────────────────────────────────────────────────────────────
-
 const ResultForm = ({
   type,
   data,
@@ -44,6 +40,39 @@ const ResultForm = ({
   setOpen: Dispatch<SetStateAction<boolean>>;
   relatedData?: any;
 }) => {
+
+  // ── Extract data FIRST (needed before useEffect) ──────────────────────────
+  const allStudents: any[]    = Array.isArray(relatedData?.students)    ? relatedData.students    : [];
+  const allExams: any[]       = Array.isArray(relatedData?.exams)       ? relatedData.exams       : [];
+  const allAssignments: any[] = Array.isArray(relatedData?.assignments) ? relatedData.assignments : [];
+  const allClasses: any[]     = Array.isArray(relatedData?.classes)     ? relatedData.classes     : [];
+
+  // ── State ─────────────────────────────────────────────────────────────────
+  const [assessmentType, setAssessmentType] = useState<"exam" | "assignment">(
+    data?.examId ? "exam" : "assignment"
+  );
+  const [selectedClass, setSelectedClass] = useState<string>("");
+
+  // ── Auto-fill class on update ─────────────────────────────────────────────
+  useEffect(() => {
+    if (type === "update" && data?.studentId && allStudents.length > 0) {
+      const student = allStudents.find((s: any) => s.id === data.studentId);
+      if (student) setSelectedClass(student.className);
+    }
+  }, [allStudents, data?.studentId, type]);
+
+  // ── Filter by selected class ──────────────────────────────────────────────
+  const students    = selectedClass
+    ? allStudents.filter((s) => s.className === selectedClass)
+    : allStudents;
+  const exams       = selectedClass
+    ? allExams.filter((e) => e.lesson?.class?.name === selectedClass)
+    : allExams;
+  const assignments = selectedClass
+    ? allAssignments.filter((a) => a.lesson?.class?.name === selectedClass)
+    : allAssignments;
+
+  // ── Form ──────────────────────────────────────────────────────────────────
   const {
     register,
     handleSubmit,
@@ -52,44 +81,13 @@ const ResultForm = ({
   } = useForm<ResultSchema>({
     resolver: zodResolver(resultSchema),
     defaultValues: {
+      id: data?.id,
       score: data?.score || 0,
       studentId: data?.studentId || "",
       examId: data?.examId || undefined,
       assignmentId: data?.assignmentId || undefined,
     },
   });
-
-  const [assessmentType, setAssessmentType] = useState<"exam" | "assignment">(
-    data?.examId ? "exam" : "assignment"
-  );
-
-  //------------------------------------------------------------------
-
-  const [selectedClass, setSelectedClass] = useState<string>("");
-  const [studentId, setStudentId] = useState<string>(data?.studentId ?? "");
-  const [examId, setExamId] = useState<string>(
-    data?.examId ? String(data.examId) : ""
-  );
-  const [assignmentId, setAssignmentId] = useState<string>(
-    data?.assignmentId ? String(data.assignmentId) : ""
-  );
-
-  const allStudents: any[] = Array.isArray(relatedData?.students) ? relatedData.students : [];
-  const allExams: any[]    = Array.isArray(relatedData?.exams)    ? relatedData.exams    : [];
-  const allAssignments: any[] = Array.isArray(relatedData?.assignments) ? relatedData.assignments : [];
-  const allClasses: any[]  = Array.isArray(relatedData?.classes)  ? relatedData.classes  : [];
-
-  useEffect(() => {
-    if (type === "update" && data?.studentId && allStudents.length > 0) {
-      const student = allStudents.find((s: any) => s.id === data.studentId);
-      if (student) {
-        setSelectedClass(student.className);
-      }
-    }
-  }, [allStudents, data?.studentId, type]);
-
-  //------------------------------------------------------------------
-
 
   const [state, formAction] = useActionState(
     type === "create" ? createResult : updateResult,
@@ -115,13 +113,8 @@ const ResultForm = ({
     });
   });
 
-  const { exams, assignments, students } = relatedData || {
-    exams: [],
-    assignments: [],
-    students: [],
-  };
-
   const scoreValue = watch("score") || 0;
+
   const getGradeLabel = (score: number) => {
     if (score >= 90) return { label: "A+", color: "text-emerald-600 bg-emerald-50" };
     if (score >= 80) return { label: "A",  color: "text-green-600 bg-green-50" };
@@ -145,7 +138,7 @@ const ResultForm = ({
           : "Edit the score or details of this result."}
       </p>
 
-      {/* hidden id for update */}
+      {/* Hidden id */}
       {data && (
         <InputField
           label="Id"
@@ -157,10 +150,29 @@ const ResultForm = ({
         />
       )}
 
-      {/* Student selector */}
+      {/* ── Class filter ── */}
       <div className="flex flex-col gap-1.5">
         <label className="text-xs font-medium text-gray-500 uppercase tracking-wide">
-          Student
+          Class <span className="normal-case text-gray-400 font-normal">(filter students, exams &amp; assignments)</span>
+        </label>
+        <select
+          className="ring-[1.5px] ring-gray-200 p-2.5 rounded-lg text-sm w-full focus:ring-lamaSky focus:outline-none"
+          value={selectedClass}
+          onChange={(e) => setSelectedClass(e.target.value)}
+        >
+          <option value="">— All classes</option>
+          {allClasses.map((c: any) => (
+            <option key={c.id} value={c.name}>
+              {c.name}
+            </option>
+          ))}
+        </select>
+      </div>
+
+      {/* ── Student selector ── */}
+      <div className="flex flex-col gap-1.5">
+        <label className="text-xs font-medium text-gray-500 uppercase tracking-wide">
+          Student <span className="normal-case text-gray-400 font-normal">({students.length} available)</span>
         </label>
         <select
           className="ring-[1.5px] ring-gray-200 p-2.5 rounded-lg text-sm w-full focus:ring-lamaSky focus:outline-none"
@@ -168,7 +180,7 @@ const ResultForm = ({
           defaultValue={data?.studentId}
         >
           <option value="">Select a student...</option>
-          {students.map((s: { id: string; name: string; surname: string; className: string }) => (
+          {students.map((s: any) => (
             <option key={s.id} value={s.id}>
               {s.name} {s.surname} — {s.className}
             </option>
@@ -179,7 +191,7 @@ const ResultForm = ({
         )}
       </div>
 
-      {/* Assessment type toggle */}
+      {/* ── Assessment type toggle ── */}
       <div className="flex flex-col gap-1.5">
         <label className="text-xs font-medium text-gray-500 uppercase tracking-wide">
           Assessment type
@@ -210,11 +222,11 @@ const ResultForm = ({
         </div>
       </div>
 
-      {/* Exam or Assignment selector */}
+      {/* ── Exam or Assignment selector ── */}
       {assessmentType === "exam" ? (
         <div className="flex flex-col gap-1.5">
           <label className="text-xs font-medium text-gray-500 uppercase tracking-wide">
-            Exam
+            Exam <span className="normal-case text-gray-400 font-normal">({exams.length} available)</span>
           </label>
           <select
             className="ring-[1.5px] ring-gray-200 p-2.5 rounded-lg text-sm w-full focus:ring-lamaSky focus:outline-none"
@@ -222,7 +234,7 @@ const ResultForm = ({
             defaultValue={data?.examId}
           >
             <option value="">Select an exam...</option>
-            {exams.map((e: { id: number; title: string; lesson: { class: { name: string }; subject: { name: string } } }) => (
+            {exams.map((e: any) => (
               <option key={e.id} value={e.id}>
                 {e.title} — {e.lesson?.subject?.name} ({e.lesson?.class?.name})
               </option>
@@ -235,7 +247,7 @@ const ResultForm = ({
       ) : (
         <div className="flex flex-col gap-1.5">
           <label className="text-xs font-medium text-gray-500 uppercase tracking-wide">
-            Assignment
+            Assignment <span className="normal-case text-gray-400 font-normal">({assignments.length} available)</span>
           </label>
           <select
             className="ring-[1.5px] ring-gray-200 p-2.5 rounded-lg text-sm w-full focus:ring-lamaSky focus:outline-none"
@@ -243,7 +255,7 @@ const ResultForm = ({
             defaultValue={data?.assignmentId}
           >
             <option value="">Select an assignment...</option>
-            {assignments.map((a: { id: number; title: string; lesson: { class: { name: string }; subject: { name: string } } }) => (
+            {assignments.map((a: any) => (
               <option key={a.id} value={a.id}>
                 {a.title} — {a.lesson?.subject?.name} ({a.lesson?.class?.name})
               </option>
@@ -255,7 +267,7 @@ const ResultForm = ({
         </div>
       )}
 
-      {/* Score input with live grade preview */}
+      {/* ── Score input with live grade preview ── */}
       <div className="flex flex-col gap-1.5">
         <label className="text-xs font-medium text-gray-500 uppercase tracking-wide">
           Score (0 — 100)
@@ -273,7 +285,6 @@ const ResultForm = ({
             {grade.label}
           </div>
         </div>
-        {/* Score bar preview */}
         <div className="w-full bg-gray-100 rounded-full h-1.5 mt-1">
           <div
             className={`h-1.5 rounded-full transition-all duration-300 ${
@@ -293,7 +304,7 @@ const ResultForm = ({
         )}
       </div>
 
-      {/* Grade reference */}
+      {/* ── Grade reference ── */}
       <div className="bg-gray-50 rounded-lg p-3">
         <p className="text-xs text-gray-400 mb-2 font-medium">Grade reference</p>
         <div className="grid grid-cols-4 gap-1.5">
