@@ -54,3 +54,6 @@ It helps manage students, teachers, parents and announcements so on......
 
 //(for image upoading)
 - npm i next-cloudinary --legacy-peer-deps
+
+//(for result prediction charts)
+- npm i recharts --legacy-peer-deps
