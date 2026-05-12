@@ -1,6 +1,6 @@
 "use client";
 
-import { deleteClass, deleteExam, deleteResult, deleteStudent, deleteSubject, deleteTeacher } from "@/lib/actions";
+import { deleteAssignment, deleteClass, deleteExam, deleteResult, deleteStudent, deleteSubject, deleteTeacher } from "@/lib/actions";
 import dynamic from "next/dynamic";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
@@ -15,6 +15,7 @@ const deleteActionMap = {
   student: deleteStudent,
   exam: deleteExam,
   result: deleteResult,
+  assignment: deleteAssignment,
 };
 
 
@@ -43,8 +44,11 @@ const ResultForm = dynamic(() => import("./forms/ResultForm"),{
     loading: () => <h1>Loading...</h1>,
 });
 
+const AssignmentForm = dynamic(() => import("./forms/AssignmentForm"),{
+    loading: () => <h1>Loading...</h1>,
+});
+
 const AnnouncementForm = dynamic(() => import("./forms/AnnouncementForm"));
-const AssignmentForm = dynamic(() => import("./forms/AssignmentForm"));
 const AttendanceForm = dynamic(() => import("./forms/AttendanceForm"));
 const EventForm = dynamic(() => import("./forms/EventForm"));
 const LessonForm = dynamic(() => import("./forms/LessonForm"));
@@ -68,11 +72,11 @@ const forms: {
     student: (setOpen, type, data, relatedData) => <StudentForm type={type} data={data} setOpen={setOpen} relatedData={relatedData} />,
     exam: (setOpen, type, data, relatedData) => <ExamForm type={type} data={data} setOpen={setOpen} relatedData={relatedData} />,
     result: (setOpen, type, data, relatedData) => <ResultForm type={type} data={data} setOpen={setOpen} relatedData={relatedData} />,
+    assignment: (setOpen, type, data, relatedData) => <AssignmentForm type={type} data={data} setOpen={setOpen} relatedData={relatedData} />,
 
 
     parent: (type, data) => <ParentForm type={type} data={data} />,
     lesson: (type, data) => <LessonForm type={type} data={data} />,
-    assignment: (type, data) => <AssignmentForm type={type} data={data} />,
     attendance: (type, data) => <AttendanceForm type={type} data={data} />,
     event: (type, data) => <EventForm type={type} data={data} />,
     announcement: (type, data) => <AnnouncementForm type={type} data={data} />,
