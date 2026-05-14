@@ -1,6 +1,6 @@
 "use client";
 
-import { deleteAssignment, deleteClass, deleteExam, deleteLesson, deleteResult, deleteStudent, deleteSubject, deleteTeacher } from "@/lib/actions";
+import { deleteAssignment, deleteClass, deleteExam, deleteLesson, deleteParent, deleteResult, deleteStudent, deleteSubject, deleteTeacher } from "@/lib/actions";
 import dynamic from "next/dynamic";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
@@ -17,6 +17,7 @@ const deleteActionMap = {
   result: deleteResult,
   assignment: deleteAssignment,
   lesson: deleteLesson,
+  parent: deleteParent,
 };
 
 
@@ -53,10 +54,13 @@ const LessonForm = dynamic(() => import("./forms/LessonForm"),{
     loading: () => <h1>Loading...</h1>,
 });
 
+const ParentForm = dynamic(() => import("./forms/ParentForm"),{
+    loading: () => <h1>Loading...</h1>,
+});
+
 const AnnouncementForm = dynamic(() => import("./forms/AnnouncementForm"));
 const AttendanceForm = dynamic(() => import("./forms/AttendanceForm"));
 const EventForm = dynamic(() => import("./forms/EventForm"));
-const ParentForm = dynamic(() => import("./forms/ParentForm"));
 
 
 
@@ -78,9 +82,9 @@ const forms: {
     result: (setOpen, type, data, relatedData) => <ResultForm type={type} data={data} setOpen={setOpen} relatedData={relatedData} />,
     assignment: (setOpen, type, data, relatedData) => <AssignmentForm type={type} data={data} setOpen={setOpen} relatedData={relatedData} />,
     lesson: (setOpen, type, data, relatedData) => <LessonForm type={type} data={data} setOpen={setOpen} relatedData={relatedData} />,
+    parent: (setOpen, type, data, relatedData) => <ParentForm type={type} data={data} setOpen={setOpen} relatedData={relatedData} />,
 
 
-    parent: (type, data) => <ParentForm type={type} data={data} />,
     attendance: (type, data) => <AttendanceForm type={type} data={data} />,
     event: (type, data) => <EventForm type={type} data={data} />,
     announcement: (type, data) => <AnnouncementForm type={type} data={data} />,

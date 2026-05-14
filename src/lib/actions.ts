@@ -1,7 +1,7 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
-import { AssignmentSchema, ClassSchema, ExamSchema, LessonSchema, ResultSchema, StudentSchema, SubjectSchema, TeacherSchema } from "./formValidationSchemas";
+import { AssignmentSchema, ClassSchema, ExamSchema, LessonSchema, ParentSchema, ResultSchema, StudentSchema, SubjectSchema, TeacherSchema } from "./formValidationSchemas";
 import prisma from "./prisma";
 import { clerkClient } from "@clerk/nextjs/server";
 
@@ -637,6 +637,116 @@ export const deleteLesson = async (
   try {
     await prisma.lesson.delete({
       where: { id: parseInt(id) },
+    });
+    return { success: true, error: false };
+  } catch (err) {
+    console.log(err);
+    return { success: false, error: true };
+  }
+};
+
+
+
+
+
+
+
+
+export const createParent = async (
+  currentState: CurrentState,
+  data: ParentSchema
+) => {
+  try {
+    const client = await clerkClient();
+    const user = await client.users.createUser({
+      username: data.username,
+      password: data.password,
+      firstName: data.name,
+      lastName: data.surname,
+      publicMetadata: { role: "parent" },
+    });
+
+    await prisma.parent.create({
+      data: {
+        id:      user.id,
+        username: data.username,
+        name:     data.name,
+        surname:  data.surname,
+        email:    data.email   || null,
+        phone:    data.phone,
+        address:  data.address,
+        // students: {
+        //   connect: data.studentIds.map((id) => ({ id })),
+        // },
+
+        ...(data.studentIds && data.studentIds.length > 0 && {
+          students: {
+            connect: data.studentIds.map((id) => ({ id })),
+          },
+        }),
+
+      },
+    });
+    return { success: true, error: false };
+  } catch (err) {
+    console.log(err);
+    return { success: false, error: true };
+  }
+};
+
+export const updateParent = async (
+  currentState: CurrentState,
+  data: ParentSchema
+) => {
+  if (!data.id) return { success: false, error: true };
+  try {
+    const client = await clerkClient();
+    await client.users.updateUser(data.id, {
+      username:  data.username,
+      ...(data.password !== "" && { password: data.password }),
+      firstName: data.name,
+      lastName:  data.surname,
+    });
+
+    await prisma.parent.update({
+      where: { id: data.id },
+      data: {
+        username: data.username,
+        name:     data.name,
+        surname:  data.surname,
+        email:    data.email   || null,
+        phone:    data.phone,
+        address:  data.address,
+        // students: {
+        //   set: data.studentIds.map((id) => ({ id })),
+        // },
+
+        students: {
+          set: (data.studentIds ?? []).map((id) => ({ id })),
+        },
+
+
+
+      },
+    });
+    return { success: true, error: false };
+  } catch (err) {
+    console.log(err);
+    return { success: false, error: true };
+  }
+};
+
+export const deleteParent = async (
+  currentState: CurrentState,
+  data: FormData
+) => {
+  const id = data.get("id") as string;
+  try {
+    const client = await clerkClient();
+    await client.users.deleteUser(id);
+
+    await prisma.parent.delete({
+      where: { id },
     });
     return { success: true, error: false };
   } catch (err) {

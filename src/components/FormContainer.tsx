@@ -61,7 +61,13 @@ const FormContainer = async ({ table, type, data, id }: FormContainerProps) => {
         const studentClasses = await prisma.class.findMany({
           include: { _count: { select: { students: true } } },
         });
-        relatedData = { classes: studentClasses, grades: studentGrades };
+        // fetch parents so the student form can show a searchable parent picker
+        const studentParents = await prisma.parent.findMany({
+          select: { id: true, name: true, surname: true },
+          orderBy: { name: "asc" },
+        });
+
+        relatedData = { classes: studentClasses, grades: studentGrades, parents: studentParents, };
         break;
 
 
@@ -177,6 +183,24 @@ const FormContainer = async ({ table, type, data, id }: FormContainerProps) => {
             teachers: lessonTeachers,
           };
           break;
+
+
+      case "parent":
+        const parentStudents = await prisma.student.findMany({
+          include: {
+            class: { select: { name: true } },
+          },
+          orderBy: { name: "asc" },
+        });
+        relatedData = {
+          students: parentStudents.map((s) => ({
+            id:        s.id,
+            name:      s.name,
+            surname:   s.surname,
+            className: s.class.name,
+          })),
+        };
+        break;
 
       default:
         break;

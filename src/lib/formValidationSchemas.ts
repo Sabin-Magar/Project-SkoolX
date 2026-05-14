@@ -138,3 +138,34 @@ export const lessonSchema = z.object({
 });
 
 export type LessonSchema = z.infer<typeof lessonSchema>;
+
+
+
+
+export const parentSchema = z.object({
+  id: z.string().optional(),
+  username: z
+    .string()
+    .min(3, { message: "Username must be at least 3 characters!" })
+    .max(20, { message: "Username must be at most 20 characters!" }),
+  password: z
+    .string()
+    .min(8, { message: "Password must be at least 8 characters!" })
+    .optional()
+    .or(z.literal("")),
+  name: z.string().min(1, { message: "First name is required!" }),
+  surname: z.string().min(1, { message: "Last name is required!" }),
+  email: z
+    .string()
+    .email({ message: "Invalid email address!" })
+    .optional()
+    .or(z.literal("")),
+  phone: z.string().min(1, { message: "Phone number is required!" }),
+  address: z.string().min(1, { message: "Address is required!" }),
+  // studentIds: z
+  //   .array(z.string())
+  //   .min(1, { message: "At least one student is required!" }),
+  studentIds: z.array(z.string()).optional().default([]),
+});
+
+export type ParentSchema = z.infer<typeof parentSchema>;
