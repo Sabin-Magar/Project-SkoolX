@@ -1,6 +1,7 @@
 const AttendanceForm = () => {
   return (
-<div>AttendanceForm</div>
+    <div>AttendanceForm</div>
   )
 }
+
 export default AttendanceForm
