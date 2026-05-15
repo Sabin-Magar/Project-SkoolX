@@ -93,6 +93,7 @@ model Class {
   grade         Grade          @relation(fields: [gradeId], references: [id])
   events        Event[]
   announcements Announcement[]
+  attendances   Attendance[]
 }
 
 model Subject {
@@ -117,7 +118,7 @@ model Lesson {
   teacher     Teacher      @relation(fields: [teacherId], references: [id])
   exams       Exam[]
   assignments Assignment[]
-  attendances Attendance[]
+  // attendances Attendance[]
 }
 
 model Exam {
@@ -161,8 +162,12 @@ model Attendance {
 
   studentId String
   student   Student @relation(fields: [studentId], references: [id])
-  lessonId  Int
-  lesson    Lesson  @relation(fields: [lessonId], references: [id])
+
+  classId   Int?
+  class     Class?   @relation(fields: [classId], references: [id])
+
+  // lessonId  Int
+  // lesson    Lesson  @relation(fields: [lessonId], references: [id])
 }
 
 model Event {

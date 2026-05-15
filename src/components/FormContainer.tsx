@@ -213,6 +213,9 @@ const FormContainer = async ({ table, type, data, id }: FormContainerProps) => {
         };
         break;
 
+      case "attendance":
+        break;
+
       default:
         break;
     }

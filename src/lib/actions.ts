@@ -817,3 +817,65 @@ export const deleteAnnouncement = async (
     return { success: false, error: true };
   }
 };
+
+
+
+
+
+
+
+
+
+
+
+export const markAttendance = async (
+  currentState: { success: boolean; error: boolean; message?: string },
+  formData: FormData
+) => {
+  const classId = formData.get("classId") as string;
+  const date    = formData.get("date") as string;
+  const records = JSON.parse(formData.get("records") as string) as {
+    studentId: string;
+    present: boolean;
+  }[];
+
+  if (!classId || !date || !records.length) {
+    return { success: false, error: true, message: "Missing required fields." };
+  }
+
+  const start = new Date(date); start.setHours(0, 0, 0, 0);
+  const end   = new Date(date); end.setHours(23, 59, 59, 999);
+
+  try {
+    for (const { studentId, present } of records) {
+      const existing = await prisma.attendance.findFirst({
+        where: {
+          studentId,
+          classId: parseInt(classId),
+          date: { gte: start, lte: end },
+        },
+      });
+
+      if (existing) {
+        // Update if already marked (allows correction same day)
+        await prisma.attendance.update({
+          where: { id: existing.id },
+          data: { present },
+        });
+      } else {
+        await prisma.attendance.create({
+          data: {
+            studentId,
+            present,
+            date: start,
+            classId: parseInt(classId),
+          },
+        });
+      }
+    }
+    return { success: true, error: false };
+  } catch (err) {
+    console.log("markAttendance error:", err);
+    return { success: false, error: true, message: "Failed to save." };
+  }
+};
