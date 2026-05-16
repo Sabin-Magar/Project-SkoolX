@@ -177,6 +177,9 @@ model Event {
   startTime   DateTime
   endTime     DateTime
 
+  priority    Int      @default(5)     // ← ADD: 1 (lowest) to 10 (highest)
+  targetRole  String   @default("ALL") // ← ADD: ALL | ADMIN | TEACHER | STUDENT | PARENT
+
   classId Int?
   class   Class? @relation(fields: [classId], references: [id])
 }
