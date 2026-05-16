@@ -165,7 +165,7 @@ const EventForm = ({
       onSubmit={onSubmit}
     >
       {/* Header */}
-      <div className="sticky top-0 bg-white pt-1 pb-3 border-b border-gray-100 z-10">
+      <div className="sticky top-0 bg-white pt-1 pb-3 pr-6 border-b border-gray-100 z-10">
         <h1 className="text-xl font-semibold text-gray-800">
           {type === "create" ? "Create new event" : "Update event"}
         </h1>
@@ -287,20 +287,6 @@ const EventForm = ({
         </select>
         {errors.classId && <p className="text-xs text-red-400">{errors.classId.message?.toString()}</p>}
       </div>
-
-      {/* ── Scheduling info ── */}
-      {/* <div className="bg-lamaSkyLight rounded-lg p-3 flex gap-2 items-start">
-        <span className="mt-0.5 text-lamaSky">⚡</span>
-        <div>
-          <p className="text-xs font-medium text-gray-700 mb-0.5">Priority + EDF Scheduling</p>
-          <p className="text-xs text-gray-500 leading-relaxed">
-            Events are automatically ordered using a hybrid algorithm:
-            <strong> Priority Scheduling</strong> (60%) ensures critical events appear first,
-            while <strong>Earliest Deadline First</strong> (40%) escalates urgency as the
-            event end-time approaches.
-          </p>
-        </div>
-      </div> */}
 
       {state.error && (
         <p className="text-sm text-red-500 bg-red-50 rounded-lg p-3 border border-red-200">

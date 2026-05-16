@@ -153,7 +153,7 @@ const FormModal = ({table,type,data,id, relatedData}:FormContainerProps & { rela
                     <div className="bg-white p-4 rounded-md relative w-[90%] md:w-[70%] lg:w-[60%] xl:w-[50%] 2xl:w-[40%]">
                         <Form />
                         <div 
-                        className="absolute top-4 right-4 cursor-pointer"
+                        className="absolute top-4 right-4 cursor-pointer z-20"
                         onClick={() => setOpen(false)}
                         >
                             <Image src="/close.png" alt="" width={14} height={14} />
