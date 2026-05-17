@@ -9,11 +9,17 @@ const AttendanceChartContainer = async () => {
   const lastSunday = new Date(today);
 
   lastSunday.setDate(today.getDate() - dayOfWeek);
+  lastSunday.setHours(0, 0, 0, 0);
+
+  const nextSaturday = new Date(lastSunday);
+  nextSaturday.setDate(lastSunday.getDate() + 6);
+  nextSaturday.setHours(23, 59, 59, 999);
 
   const resData = await prisma.attendance.findMany({
     where: {
       date: {
         gte: lastSunday,
+        lte: nextSaturday,
       },
     },
     select: {
