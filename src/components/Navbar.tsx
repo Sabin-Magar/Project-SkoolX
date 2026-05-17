@@ -2,6 +2,7 @@ import { UserButton } from "@clerk/nextjs"
 import { currentUser, auth } from "@clerk/nextjs/server";
 import Image from "next/image"
 import prisma from "@/lib/prisma";
+import Link from "next/link";
 
 const Navbar = async () => {
   const user = await currentUser();
@@ -32,14 +33,16 @@ const Navbar = async () => {
     <div className="flex items-center justify-between p-4">
       {/* Icons and user */}
       <div className="flex items-center gap-6 justify-end w-full">
-        <div className="bg-white rounded-full w-7 h-7 flex items-center justify-center cursor-pointer relative">
-          <Image src="/announcement.png" alt="" width={20} height={20} />
-          {announcementCount > 0 && (
-            <div className="absolute -top-3 -right-3 w-5 h-5 flex items-center justify-center bg-purple-500 text-white rounded-full text-xs">
-              {announcementCount > 99 ? "99+" : announcementCount}
-            </div>
-          )}
-        </div>
+        <Link href="/list/announcements">
+          <div className="bg-white rounded-full w-7 h-7 flex items-center justify-center cursor-pointer relative">
+            <Image src="/announcement.png" alt="" width={20} height={20} />
+            {announcementCount > 0 && (
+              <div className="absolute -top-3 -right-3 w-5 h-5 flex items-center justify-center bg-purple-500 text-white rounded-full text-xs">
+                {announcementCount > 99 ? "99+" : announcementCount}
+              </div>
+            )}
+          </div>
+        </Link>
 
         <div className="flex flex-col">
           <span className="text-xs leading-3 font-medium">

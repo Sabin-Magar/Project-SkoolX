@@ -2,6 +2,7 @@
 import { currentUser } from "@clerk/nextjs/server";
 import Image from "next/image";
 import Link from "next/link";
+import LogoutButton from "./LogoutButton";
 
 const menuItems = [
   {
@@ -102,18 +103,6 @@ const menuItems = [
         href: "/profile",
         visible: ["admin", "teacher", "student", "parent"],
       },
-      {
-        icon: "/setting.png",
-        label: "Settings",
-        href: "/settings",
-        visible: ["admin", "teacher", "student", "parent"],
-      },
-      {
-        icon: "/logout.png",
-        label: "Logout",
-        href: "/logout",
-        visible: ["admin", "teacher", "student", "parent"],
-      },
     ],
   },
 ];
@@ -145,6 +134,9 @@ const Menu = async () => {
           }})}
         </div>
       ))}
+
+      {/* Logout — rendered separately using Clerk SignOutButton */}
+      <LogoutButton />
     </div>
   )
 }
