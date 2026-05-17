@@ -1,7 +1,13 @@
 import Announcements from "@/components/Announcements"
 import BigCalendar from "@/components/BigCalendar"
+import EventCalendarContainer from "@/components/EventCalendarContainer";
 
-const ParentPage = () => {
+const ParentPage = async ({
+  searchParams,
+}: {
+  searchParams: Promise<{ [keys: string]: string | undefined }>;
+}) => {
+  const resolvedSearchParams = await searchParams;
   return (
     <div className="flex-1 p-4 flex gap-4 flex-col xl:flex-row">
       {/* Left portion */}
@@ -14,6 +20,8 @@ const ParentPage = () => {
 
       {/* right portion */}
       <div className="w-full xl:w-1/3 flex flex-col gap-8">
+        <EventCalendarContainer searchParams={resolvedSearchParams} />
+
         <Announcements />
       </div>
     </div>
