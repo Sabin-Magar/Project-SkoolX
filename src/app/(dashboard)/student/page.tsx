@@ -98,7 +98,7 @@ const StudentPage = async ({
               {greeting()},
             </p>
             <h1 className="text-2xl font-bold text-purple-950 truncate">
-              {student?.name} {student?.surname} 👋
+              {student?.name} {student?.surname} 
             </h1>
 
             <div className="flex items-center gap-4 mt-3 flex-wrap">

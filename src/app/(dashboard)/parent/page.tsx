@@ -74,7 +74,7 @@ const ParentPage = async ({
           <div className="relative z-10 flex-1 min-w-0">
             <p className="text-yellow-900 text-sm font-medium">{greeting()},</p>
             <h1 className="text-2xl font-bold text-yellow-950 truncate">
-              {parent?.name} {parent?.surname} 👋
+              {parent?.name} {parent?.surname} 
             </h1>
             <p className="text-yellow-800/70 text-xs mt-1">
               You have {children.length} child{children.length !== 1 ? "ren" : ""} enrolled at SkoolX
