@@ -931,7 +931,8 @@ export const updateEvent = async (
         endTime:     data.endTime,
         priority:    data.priority,
         targetRole:  data.targetRole,
-        classId:     data.classId ?? null,
+        // classId:     data.classId ?? null,
+        classId: data.classId ? data.classId : null,
       },
     });
     return { success: true, error: false };

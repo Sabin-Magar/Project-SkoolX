@@ -205,7 +205,8 @@ export const eventSchema = z.object({
   targetRole:  z.enum(["ALL", "ADMIN", "TEACHER", "STUDENT", "PARENT"], {
     message: "Target audience is required!",
   }),
-  classId:     z.coerce.number().optional(),
+  // classId:     z.coerce.number().optional(),
+  classId: z.coerce.number().optional().transform((v) => (v === 0 ? undefined : v)),
 });
 
 export type EventSchema = z.infer<typeof eventSchema>;
