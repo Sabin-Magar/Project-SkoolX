@@ -1,7 +1,5 @@
 import Announcements from "@/components/Announcements"
-import BigCalendarContainer from "@/components/BigCalendarContainer"
 import FormContainer from "@/components/FormContainer"
-import Performance from "@/components/Performance"
 import PredictionCard from "@/components/PredictionCard"
 import StudentAttendanceCard from "@/components/StudentAttendanceCard"
 import prisma from "@/lib/prisma"
@@ -24,11 +22,15 @@ const SingleStudentPage = async ({
   const student:
     | (Student & {
         class: Class & { _count: { lessons: number } };
+        parent: { name: string; surname: string; phone: string; email: string | null };
       })
     | null = await prisma.student.findUnique({
     where: { id },
     include: {
       class: { include: { _count: { select: { lessons: true } } } },
+      parent: {                                    // ← add this
+        select: { name: true, surname: true, phone: true, email: true },
+    },
     },
   });
 
@@ -58,7 +60,7 @@ const SingleStudentPage = async ({
                                 <FormContainer table="student" type="update" data={student} />
                             )}
                         </div>
-                        <p className="text-sm text-gray-500">Lorem ipsum, dolor sit amet consectetur adipisicing elit.</p>
+                        <p className="text-sm text-gray-500">A dedicated student at SkoolX, committed to learning and growing every day.</p>
 
                         <div className="flex items-center justify-between gap-2 flex-wrap text-xs font-medium">
                             <div className="w-full md:w-1/3 lg:w-full 2xl:w-1/3 flex items-center gap-2">
@@ -97,10 +99,6 @@ const SingleStudentPage = async ({
                         <Suspense fallback="loading...">
                             <StudentAttendanceCard id={student.id} />
                         </Suspense>
-                        {/* <div className="">
-                            <h1 className="text-xl font-semibold">90%</h1>
-                            <span className="text-sm text-gray-400">Attendance</span>
-                        </div> */}
                     </div>
 
                     {/* CARD */}
@@ -150,8 +148,8 @@ const SingleStudentPage = async ({
 
             {/* bottom section */}
             <div className="mt-4 bg-white rounded-md p-4 h-[800px]">
-                <h1>Student&apos;s Schedule</h1>
-                <BigCalendarContainer type="classId" id={student.class.id}  />
+                <h1>Student&apos;s Analysis</h1>
+                 <PredictionCard studentId={student.id} />
             </div>
         </div>
 
@@ -192,8 +190,25 @@ const SingleStudentPage = async ({
                     </Link>
                 </div>
             </div>
-            <PredictionCard studentId={student.id} />
-            {/* <Performance /> */}
+
+            <div className="bg-white p-4 rounded-md">
+                <h1 className="text-xl font-semibold mb-4">Parent / Guardian</h1>
+                <div className="flex flex-col gap-3 text-sm text-gray-600">
+                    <div className="flex items-center gap-2">
+                    <span className="font-medium text-gray-800">
+                        {student.parent.name} {student.parent.surname}
+                    </span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                    <Image src="/phone.png" alt="" width={14} height={14} />
+                    <span>{student.parent.phone || "—"}</span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                    <Image src="/mail.png" alt="" width={14} height={14} />
+                    <span>{student.parent.email || "—"}</span>
+                    </div>
+                </div>
+            </div>
             <Announcements />
         </div>
 

@@ -1,41 +1,3 @@
-// import Announcements from "@/components/Announcements"
-// import BigCalendarContainer from "@/components/BigCalendarContainer";
-// import EventCalendarContainer from "@/components/EventCalendarContainer";
-// import { auth } from "@clerk/nextjs/server";
-
-// const TeacherPage = async({
-//   searchParams,
-// }: {
-//   searchParams: Promise<{ [keys: string]: string | undefined }>;
-// }) => {
-//   const resolvedSearchParams = await searchParams;
-
-//   const { userId } = await auth();
-//   return (
-//     <div className="flex-1 p-4 flex gap-4 flex-col xl:flex-row">
-//       {/* Left portion */}
-//       <div className="w-full xl:w-2/3">
-//         <div className="h-full bg-white p-4 rounded-md">
-//           <h1 className="text-xl font-semibold">Schedule</h1>
-//           <BigCalendarContainer type="teacherId" id={userId!}/>
-//         </div>
-//       </div>
-
-//       {/* right portion */}
-//       <div className="w-full xl:w-1/3 flex flex-col gap-8">
-//         <EventCalendarContainer searchParams={resolvedSearchParams} />
-//         <Announcements />
-//       </div>
-//     </div>
-//   )
-// }
-
-// export default TeacherPage;
-
-
-
-// src/app/(dashboard)/teacher/page.tsx
-
 import Announcements from "@/components/Announcements";
 import BigCalendarContainer from "@/components/BigCalendarContainer";
 import EventCalendarContainer from "@/components/EventCalendarContainer";
@@ -52,7 +14,7 @@ const TeacherPage = async ({
   const resolvedSearchParams = await searchParams;
   const { userId } = await auth();
 
-  // ── Fetch teacher with all related data ───────────────────────────────────
+  // Fetch teacher with all related data 
   const teacher = await prisma.teacher.findUnique({
     where: { id: userId! },
     include: {
@@ -66,7 +28,7 @@ const TeacherPage = async ({
     },
   });
 
-  // ── Derived stats ─────────────────────────────────────────────────────────
+  // Derived stats 
   // Unique classes
   const classMap = new Map<number, { name: string; studentCount: number }>();
   teacher?.lessons.forEach((l) => {
@@ -123,9 +85,7 @@ const TeacherPage = async ({
   return (
     <div className="p-4 flex gap-4 flex-col xl:flex-row">
 
-      {/* ══════════════════════════════════════════
-          LEFT PORTION
-      ══════════════════════════════════════════ */}
+      {/* LEFT PORTION */}
       <div className="w-full xl:w-2/3 flex flex-col gap-4">
 
         {/* ── Greeting card ── */}
@@ -326,9 +286,7 @@ const TeacherPage = async ({
         </div>
       </div>
 
-      {/* ══════════════════════════════════════════
-          RIGHT PORTION — unchanged
-      ══════════════════════════════════════════ */}
+      {/* RIGHT PORTION  */}
       <div className="w-full xl:w-1/3 flex flex-col gap-8">
         <EventCalendarContainer searchParams={resolvedSearchParams} />
         <Announcements />
