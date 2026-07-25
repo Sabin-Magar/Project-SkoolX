@@ -13,10 +13,6 @@ const currentWorkWeek = () => {
   }
   startOfWeek.setHours(0, 0, 0, 0);
 
-  // const endOfWeek = new Date(startOfWeek);
-  // endOfWeek.setDate(startOfWeek.getDate() + 5); // Sun + 5 = Fri
-  // endOfWeek.setHours(23, 59, 59, 999);
-
   return { startOfWeek };
 };
 

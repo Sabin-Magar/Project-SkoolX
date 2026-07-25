@@ -1,6 +1,3 @@
-// predictionService.ts
-// Fetches prediction data from Python ML API
-
 const ML_API_URL = process.env.ML_API_URL || "http://localhost:8000";
 
 export type PredictionData = {

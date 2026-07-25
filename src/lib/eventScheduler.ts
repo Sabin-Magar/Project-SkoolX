@@ -1,29 +1,3 @@
-// src/lib/eventScheduler.ts
-// ═══════════════════════════════════════════════════════════════════════════
-// SCHEDULING ALGORITHMS — Priority Scheduling + Earliest Deadline First (EDF)
-// ═══════════════════════════════════════════════════════════════════════════
-//
-// ALGORITHM 1: Priority Scheduling
-//   Each event has a priority 1–10 (10 = most urgent).
-//   Higher priority events are always served first.
-//
-// ALGORITHM 2: Earliest Deadline First (EDF)
-//   Among events with equal priority, the one whose endTime
-//   is soonest is scheduled first. This minimises missed deadlines.
-//
-// COMBINED SCORE FORMULA (weighted hybrid):
-//   score = (priority / 10) * PRIORITY_WEIGHT
-//         + urgency * EDF_WEIGHT
-//
-//   where urgency = 1 - clamp((msUntilEnd / MAX_WINDOW_MS), 0, 1)
-//         → 1.0 = deadline is NOW (maximum urgency)
-//         → 0.0 = deadline is far in the future (low urgency)
-//
-//   Default weights: Priority 60% · EDF 40%
-//   This makes priority the dominant factor while EDF breaks ties
-//   and escalates events as their deadline approaches.
-// ═══════════════════════════════════════════════════════════════════════════
-
 export type SchedulableEvent = {
   id: number;
   title: string;
@@ -64,21 +38,15 @@ function classifyStatus(
 }
 
 // ── COMBINED PRIORITY + EDF SCHEDULER ────────────────────────────────────────
-//
-// This is the main scheduling function used to order events.
-// It implements the hybrid Priority Scheduling + EDF algorithm.
-//
 export function scheduleEvents(
   events: SchedulableEvent[],
   now: Date = new Date()
 ): ScheduledEvent[] {
   return events
     .map((event) => {
-      // ── Priority Scheduling component ─────────────────────────────────
       // Normalise priority from 1–10 to 0–1
       const priorityScore = (event.priority - 1) / 9;
 
-      // ── EDF component ─────────────────────────────────────────────────
       // Time remaining until deadline (endTime)
       const msUntilEnd   = event.endTime.getTime() - now.getTime();
       // Urgency: 1 = deadline passed/now, 0 = far in future
@@ -96,8 +64,7 @@ export function scheduleEvents(
         status: classifyStatus(event.startTime, event.endTime, now),
       };
     })
-    // Sort descending by combined score
-    // Tie-break: if scores are equal, endTime asc (pure EDF)
+
     .sort((a, b) => {
       const diff = b.scheduledScore - a.scheduledScore;
       if (Math.abs(diff) > 0.0001) return diff;
@@ -106,7 +73,6 @@ export function scheduleEvents(
 }
 
 // ── PRIORITY-ONLY SORT ────────────────────────────────────────────────────────
-// Used for the sidebar EventList to show most important events today
 export function sortByPriority(events: SchedulableEvent[]): SchedulableEvent[] {
   return [...events].sort((a, b) => {
     if (b.priority !== a.priority) return b.priority - a.priority;
@@ -116,7 +82,6 @@ export function sortByPriority(events: SchedulableEvent[]): SchedulableEvent[] {
 }
 
 // ── EDF-ONLY SORT ─────────────────────────────────────────────────────────────
-// Used when only deadline proximity matters (e.g. "what's ending soon")
 export function sortByEDF(events: SchedulableEvent[]): SchedulableEvent[] {
   return [...events].sort((a, b) => {
     const diff = a.endTime.getTime() - b.endTime.getTime();
@@ -126,7 +91,6 @@ export function sortByEDF(events: SchedulableEvent[]): SchedulableEvent[] {
 }
 
 // ── ROLE FILTER ───────────────────────────────────────────────────────────────
-// Filter events based on user's role (role-based access)
 export function filterEventsByRole(
   events: SchedulableEvent[],
   role: string,
