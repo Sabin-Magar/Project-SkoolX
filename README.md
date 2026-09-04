@@ -57,3 +57,15 @@ It helps manage students, teachers, parents and announcements so on......
 
 //(for result prediction charts)
 - npm i recharts --legacy-peer-deps
+
+
+//running prompt
+- cd ml-service
+- source venv/bin/activate
+- python train.py
+
+- cd ml-service
+- source venv/bin/activate
+- uvicorn main:app --reload --port 8000 
+
+- npm run dev
